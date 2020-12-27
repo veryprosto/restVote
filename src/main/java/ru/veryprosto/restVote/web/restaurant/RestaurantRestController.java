@@ -2,7 +2,9 @@ package ru.veryprosto.restVote.web.restaurant;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import ru.veryprosto.restVote.model.Restaurant;
 import ru.veryprosto.restVote.service.RestService;
 import ru.veryprosto.restVote.web.SecurityUtil;
@@ -49,14 +51,18 @@ public class RestaurantRestController {
     }
 
     @PutMapping("/create")
-    public Restaurant create(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public ModelAndView create(HttpServletRequest request, HttpServletResponse response, Model model) throws ServletException, IOException {
+        ModelAndView modelAndView = new ModelAndView();
         int userId = SecurityUtil.authUserId();
         Restaurant restaurant = new Restaurant("", 0);
         checkNew(restaurant);
         log.info("create {} for user {}", restaurant, userId);
-        request.setAttribute("restaurant", restaurant);
-        request.getRequestDispatcher("/restForm.jsp").forward(request, response);
-        return service.create(restaurant, userId);
+        //request.setAttribute("restaurant", restaurant);
+        //request.getRequestDispatcher("/restForm.jsp").forward(request, response);
+        service.create(restaurant, userId);
+        model.addAttribute("restaurant", restaurant);
+        modelAndView.setViewName("restForm");
+        return modelAndView;
     }
 
     @PostMapping("/{id}/update")

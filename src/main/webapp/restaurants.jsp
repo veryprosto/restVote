@@ -7,11 +7,11 @@
 </head>
 <body>
 <section>
-    <h3><a href="index.html">Home</a></h3>
+    <h3><a href="index.jsp">Home</a></h3>
     <hr/>
     <h2>Restaurants</h2>
     <hr/>
-    <a href="restaurants?action=create">Add restaurant</a>
+    <a href="restaurants/create">Add restaurant</a>
     <br><br>
     <table border="1" cellpadding="8" cellspacing="0">
         <thead>

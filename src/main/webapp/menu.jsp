@@ -7,28 +7,28 @@
 </head>
 <body>
 <section>
-    <h3><a href="index.html">Home</a></h3>
+    <h3><a href="index.jsp">Home</a></h3>
     <hr/>
     <h2>Menu of ${restaurant.name}</h2>
     <hr/>
-    <a href="restaurants?action=create">Add restaurant</a>
+    <a href="menu?action=create">Add new dish</a>
     <br><br>
     <table border="1" cellpadding="8" cellspacing="0">
         <thead>
         <tr>
-            <th>Name</th>
-            <th>Rating</th>
+            <th>Description</th>
+            <th>Price</th>
             <th></th>
             <th></th>
         </tr>
         </thead>
-        <c:forEach items="${restaurants}" var="restaurant">
-            <jsp:useBean id="restaurant" type="ru.veryprosto.restVote.model.Restaurant"/>
+        <c:forEach items="${menu}" var="dish">
+            <jsp:useBean id="dish" type="ru.veryprosto.restVote.model.Dish"/>
             <tr>
-                <td>${restaurant.name}</td>
-                <td>${restaurant.rating}</td>
-                <td><a href="restaurants?action=update&id=${restaurant.id}">Update</a></td>
-                <td><a href="restaurants?action=delete&id=${restaurant.id}">Delete</a></td>
+                <td>${dish.name}</td>
+                <td>${dish.price}</td>
+                <td><a href="menu?action=update&id=${dish.id}">Update</a></td>
+                <td><a href="menu?action=delete&id=${dish.id}">Delete</a></td>
             </tr>
         </c:forEach>
     </table>
