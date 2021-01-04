@@ -1,6 +1,6 @@
 package ru.veryprosto.restVote;
 
-public class dsfsdf {
+public class temp {
 /*
 @RequestMapping
 public String carsPage(Model model) {

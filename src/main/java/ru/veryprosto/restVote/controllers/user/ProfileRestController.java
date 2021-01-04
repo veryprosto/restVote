@@ -1,4 +1,4 @@
-package ru.veryprosto.restVote.web.user;
+package ru.veryprosto.restVote.controllers.user;
 
 import org.springframework.stereotype.Controller;
 import ru.veryprosto.restVote.model.User;

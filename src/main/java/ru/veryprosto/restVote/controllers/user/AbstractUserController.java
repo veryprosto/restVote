@@ -1,4 +1,4 @@
-package ru.veryprosto.restVote.web.user;
+package ru.veryprosto.restVote.controllers.user;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

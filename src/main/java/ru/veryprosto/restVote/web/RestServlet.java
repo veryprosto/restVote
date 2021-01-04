@@ -4,7 +4,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.util.StringUtils;
 import ru.veryprosto.restVote.model.Restaurant;
-import ru.veryprosto.restVote.web.restaurant.RestaurantRestController;
+import ru.veryprosto.restVote.controllers.RestaurantRestController;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -14,13 +14,13 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class RestServlet extends HttpServlet {
-
+/*
     private ConfigurableApplicationContext springContext;
     private RestaurantRestController restController;
 
     @Override
     public void init() {
-        springContext = new ClassPathXmlApplicationContext("spring/spring-app.xml", "spring/spring-db.xml");
+        springContext = new ClassPathXmlApplicationContext("spring/spring-mvc.xml");
         restController = springContext.getBean(RestaurantRestController.class);
     }
 
@@ -38,9 +38,9 @@ public class RestServlet extends HttpServlet {
                 Integer.parseInt(request.getParameter("rating")));
 
         if (StringUtils.isEmpty(request.getParameter("id"))) {
-   //         restController.create(restaurant);
+            //         restController.create(restaurant);
         } else {
-     //       restController.update(restaurant, getId(request));
+            //       restController.update(restaurant, getId(request));
         }
         response.sendRedirect("restaurants");
     }
@@ -73,5 +73,5 @@ public class RestServlet extends HttpServlet {
     private int getId(HttpServletRequest request) {
         String paramId = Objects.requireNonNull(request.getParameter("id"));
         return Integer.parseInt(paramId);
-    }
+    }*/
 }

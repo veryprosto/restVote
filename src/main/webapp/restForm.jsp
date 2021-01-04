@@ -11,7 +11,7 @@
     <hr>
     <h2>${param.action == 'create' ? 'Create restaurant' : 'Edit restaurant'}</h2>
     <jsp:useBean id="restaurant" type="ru.veryprosto.restVote.model.Restaurant" scope="request"/>
-    <form method="post" action="restaurants">
+    <form method="post" action="restaurants/${restaurant.id}">
         <input type="hidden" name="id" value="${restaurant.id}">
         <dl>
             <dt>Name:</dt>

@@ -1,30 +1,26 @@
-package ru.veryprosto.restVote.web;
+package ru.veryprosto.restVote.controllers;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
-import ru.veryprosto.restVote.model.Restaurant;
 import ru.veryprosto.restVote.service.RestService;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-
-import static ru.veryprosto.restVote.util.ValidationUtil.checkNew;
+import ru.veryprosto.restVote.web.SecurityUtil;
 
 @RestController
 @RequestMapping("/")
 public class MainRestController {
     private static final Logger log = LoggerFactory.getLogger(MainRestController.class);
 
-    private final RestService service;
-
-    public MainRestController(RestService service) {
-        this.service = service;
-    }
+//    private final RestService service;
+//
+//    public MainRestController(RestService service) {
+//        this.service = service;
+//    }
 
     /*  @GetMapping("/{id}")
       public Restaurant get(@PathVariable(value = "id") int id) {
@@ -71,12 +67,20 @@ public class MainRestController {
     return "main";
     }
      */
-    @PostMapping("/users")
-    public ModelAndView users(@ModelAttribute("userId") String userIdValue, Model model) {
+
+    private final RestService service;
+
+    public MainRestController(RestService service) {
+        this.service = service;
+    }
+
+    @PostMapping("/defineRestaurants")
+    public ModelAndView defineRestaurantsMethod(@ModelAttribute("userId") int userId, Model model) {
         ModelAndView modelAndView = new ModelAndView();
-        int userId = Integer.parseInt(userIdValue);
+        //int userId = Integer.parseInt(userIdValue);
         SecurityUtil.setAuthUserId(userId);
         modelAndView.setViewName("restaurants");
+        model.addAttribute("restaurantList", service.getAll(userId));
         return modelAndView;
     }
 
