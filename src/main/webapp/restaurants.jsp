@@ -1,8 +1,10 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
+<c:set var="baseURL" value="${pageContext.request.requestURL.substring(0, pageContext.request.requestURL.length() - pageContext.request.requestURI.length())}${pageContext.request.contextPath}/" />
 <head>
+    <base href="${baseURL}" />
     <title>Restaurants</title>
 </head>
 <body>
@@ -11,7 +13,7 @@
     <hr/>
     <h2>Restaurants</h2>
     <hr/>
-    <form action="restaurants" method="put">
+    <form action="restaurants" method="get">
         <input type="submit" value="Add restaurant" />
     </form>
     <br><br>
@@ -30,14 +32,14 @@
                 <td>${restaurant.name}</td>
                 <td>${restaurant.rating}</td>
                 <td>
-                    <form action="restaurants" method="get">
+                    <form action="restaurants/${restaurant.id}" method="get">
                         <input type="submit" value="Update" />
                     </form>
                 </td>
                 <td>
-                <form action="restaurants" method="delete">
-                    <input type="submit"  value="Delete" />
-                </form>
+                    <form action="restaurants/${restaurant.id}" method="delete">
+                        <input type="submit"  value="Delete" />
+                    </form>
                 </td>
             </tr>
         </c:forEach>
