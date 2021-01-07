@@ -2,9 +2,11 @@ package ru.veryprosto.restVote.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import ru.veryprosto.restVote.model.Role;
 import ru.veryprosto.restVote.model.User;
 import ru.veryprosto.restVote.repository.UserRepository;
 
+import java.util.EnumSet;
 import java.util.List;
 
 import static ru.veryprosto.restVote.util.ValidationUtil.checkNotFound;
@@ -22,6 +24,15 @@ public class UserService {
     public User create(User user) {
         Assert.notNull(user, "user must not be null");
         return repository.save(user);
+    }
+
+    public User create(String name, String email, String password, Role role) {
+        User user = new User();
+        user.setName(name);
+        user.setEmail(email);
+        user.setPassword(password);
+        user.setRoles(EnumSet.of(role));
+        return create(user);
     }
 
     public void delete(int id) {

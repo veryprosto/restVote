@@ -9,6 +9,7 @@
 <section>
     <h3><a href="index.jsp">Home</a></h3>
     <hr/>
+    <jsp:useBean id="restaurant" type="ru.veryprosto.restVote.model.Restaurant"/>
     <h2>Menu of ${restaurant.name}</h2>
     <hr/>
     <a href="menu?action=create">Add new dish</a>

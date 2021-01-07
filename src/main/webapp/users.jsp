@@ -1,11 +1,12 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://topjava.javawebinar.ru/functions" %>
 <html>
-<c:set var="baseURL" value="${pageContext.request.requestURL.substring(0, pageContext.request.requestURL.length() - pageContext.request.requestURI.length())}${pageContext.request.contextPath}/" />
+<c:set var="baseURL"
+       value="${pageContext.request.requestURL.substring(0, pageContext.request.requestURL.length() - pageContext.request.requestURI.length())}${pageContext.request.contextPath}/"/>
 <head>
-    <base href="${baseURL}" />
+    <base href="${baseURL}"/>
     <title>Users</title>
 </head>
 <body>
@@ -33,9 +34,7 @@
             <tr>
                 <td>${user.name}</td>
                 <td>${user.email}</td>
-                <td>
-                        ${fn:formatDateTime(user.registered)}
-                </td>
+                <td> ${fn:formatDateTime(user.registered)} </td>
                 <td>
                     <form action="users/${user.id}" method="post">
                         <input type="submit" value="Update"/>

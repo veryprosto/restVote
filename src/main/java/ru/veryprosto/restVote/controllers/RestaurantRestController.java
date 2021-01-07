@@ -12,8 +12,10 @@ import ru.veryprosto.restVote.web.SecurityUtil;
 import static ru.veryprosto.restVote.util.Util.safetyConvertToUTF8;
 
 @RestController
-@RequestMapping("/restaurants")
+@RequestMapping(RestaurantRestController.REST_URL)
 public class RestaurantRestController {
+    static final String REST_URL = "/restaurants";
+
     private static final Logger log = LoggerFactory.getLogger(RestaurantRestController.class);
     private final RestaurantService service;
 

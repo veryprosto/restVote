@@ -22,6 +22,7 @@
         <tr>
             <th>Name</th>
             <th>Rating</th>
+            <th>Menu</th>
             <th></th>
             <th></th>
         </tr>
@@ -31,6 +32,11 @@
             <tr>
                 <td>${restaurant.name}</td>
                 <td>${restaurant.rating}</td>
+                <td>
+                    <form action="restaurants/${restaurant.id}" method="get">
+                        <input type="submit" value="Menu" />
+                    </form>
+                </td>
                 <td>
                     <form action="restaurants/${restaurant.id}" method="get">
                         <input type="submit" value="Update" />
