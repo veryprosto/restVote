@@ -4,7 +4,7 @@ import ru.veryprosto.restVote.model.Restaurant;
 
 import java.util.List;
 
-public interface RestRepository {
+public interface RestaurantRepository {
     // null if updated restaurant do not belong to userId
     Restaurant save(Restaurant restaurant, int userId);
 

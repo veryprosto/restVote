@@ -56,7 +56,6 @@
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
           p:dataSource-ref="dataSource"
           p:packagesToScan="ru.veryprosto.**.model">
-        <!--p:persistenceUnitName="persistenceUnit">-->
 
         <property name="jpaPropertyMap">
             <map>
@@ -67,7 +66,6 @@
                 <entry key="hibernate.connection.CharSet" value="utf-8"/>
                 <entry key="hibernate.connection.useUnicode" value="true"/>
                 <entry key="hibernate.connection.characterEncoding" value="utf-8"/>
-                <!--<entry key="#{T(org.hibernate.cfg.AvailableSettings).HBM2DDL_AUTO}" value="${hibernate.hbm2ddl.auto}"/>-->
             </map>
         </property>
 
@@ -78,10 +76,8 @@
         </property>
     </bean>
 
-
     <!-- Transaction manager for a single JPA EntityManagerFactory (alternative to JTA) -->
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"
           p:entityManagerFactory-ref="entityManagerFactory"/>
-
 
 </beans>

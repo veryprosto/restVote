@@ -3,18 +3,18 @@ package ru.veryprosto.restVote.service;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import ru.veryprosto.restVote.model.Restaurant;
-import ru.veryprosto.restVote.repository.RestRepository;
+import ru.veryprosto.restVote.repository.RestaurantRepository;
 
 import java.util.List;
 
 import static ru.veryprosto.restVote.util.ValidationUtil.checkNotFoundWithId;
 
 @Service
-public class RestService {
+public class RestaurantService {
 
-    private final RestRepository repository;
+    private final RestaurantRepository repository;
 
-    public RestService(RestRepository repository) {
+    public RestaurantService(RestaurantRepository repository) {
         this.repository = repository;
     }
 

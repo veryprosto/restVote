@@ -12,7 +12,7 @@
 <section>
     <h3><a href="index.jsp">Home</a></h3>
     <hr>
-    <h2>${param.action == 'create' ? 'Create restaurant' : 'Edit restaurant'}</h2>
+    <h2>${action_create == true ? 'Create restaurant' : 'Edit restaurant'}</h2>
     <jsp:useBean id="restaurant" type="ru.veryprosto.restVote.model.Restaurant" scope="request"/>
     <form method="post" action="restaurants">
         <input type="hidden" name="id" value="${restaurant.id}">

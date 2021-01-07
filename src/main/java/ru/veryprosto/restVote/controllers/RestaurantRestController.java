@@ -6,23 +6,19 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import ru.veryprosto.restVote.model.Restaurant;
-import ru.veryprosto.restVote.service.RestService;
+import ru.veryprosto.restVote.service.RestaurantService;
 import ru.veryprosto.restVote.web.SecurityUtil;
 
-import java.util.List;
-
-import static ru.veryprosto.restVote.util.ValidationUtil.checkNew;
+import static ru.veryprosto.restVote.util.Util.safetyConvertToUTF8;
 
 @RestController
 @RequestMapping("/restaurants")
 public class RestaurantRestController {
     private static final Logger log = LoggerFactory.getLogger(RestaurantRestController.class);
-    private final RestService service;
-    private final MainRestController mainRestController;
+    private final RestaurantService service;
 
-    public RestaurantRestController(RestService service, MainRestController mainRestController) {
+    public RestaurantRestController(RestaurantService service) {
         this.service = service;
-        this.mainRestController = mainRestController;
     }
 
     @GetMapping("/{id}")
@@ -31,41 +27,51 @@ public class RestaurantRestController {
         int userId = SecurityUtil.authUserId();
         log.info("get restaurant {} for user {}", id, userId);
         model.addAttribute("restaurant", service.get(id, userId));
-        modelAndView.setViewName("restForm");
+        model.addAttribute("action_create", false);
+        modelAndView.setViewName("restaurantForm");
         return modelAndView;
     }
 
     @PostMapping("/{id}/delete")
-    public void delete(@PathVariable(value = "id") String id) {
+    public ModelAndView delete(@PathVariable(value = "id") String id, Model model) {
         int userId = SecurityUtil.authUserId();
         log.info("delete restaurant {} for user {}", id, userId);
-        service.delete(Integer.parseInt(id) , userId);
+        service.delete(Integer.parseInt(id), userId);
+        return getAll(model);
     }
 
-    @GetMapping
-    public List<Restaurant> getAll() {
-        int userId = SecurityUtil.authUserId();
-        log.info("getAll for user {}", userId);
-        return service.getAll(userId);
-    }
-
-    @PostMapping("/create")
+    @GetMapping("/create")
     public ModelAndView create(Model model) {
-        int userId = SecurityUtil.authUserId();
+        ModelAndView modelAndView = new ModelAndView();
         Restaurant restaurant = new Restaurant("", 0);
-        checkNew(restaurant);
-        log.info("create {} for user {}", restaurant, userId);
-        service.create(restaurant, userId);
         model.addAttribute("restaurant", restaurant);
-        return mainRestController.defineRestaurantsMethod(userId, model);
+        model.addAttribute("action_create", true);
+        modelAndView.setViewName("restaurantForm");
+        return modelAndView;
     }
 
     @PostMapping
     public ModelAndView update(Model model, Restaurant restaurant) {
+        restaurant.setName(safetyConvertToUTF8(restaurant.getName()));
         int userId = SecurityUtil.authUserId();
         log.info("update {} for user {}", restaurant, userId);
         service.update(restaurant, userId);
         model.addAttribute("restaurant", restaurant);
-        return mainRestController.defineRestaurantsMethod(userId, model);
+        return getAll(model);
+    }
+
+    @GetMapping
+    public ModelAndView getAll(@ModelAttribute("userId") int userId, Model model) {
+        ModelAndView modelAndView = new ModelAndView();
+        if (userId != 0) {
+            SecurityUtil.setAuthUserId(userId);
+        } else userId = SecurityUtil.authUserId();
+        modelAndView.setViewName("restaurants");
+        model.addAttribute("restaurantList", service.getAll(userId));
+        return modelAndView;
+    }
+
+    private ModelAndView getAll(Model model) {
+        return getAll(0, model);
     }
 }

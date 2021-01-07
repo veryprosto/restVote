@@ -9,7 +9,7 @@
 <body>
 <h3>Проект голосование за ресторан</h3>
 <hr>
-<form method="post" action="defineRestaurants">
+<form method="get" action="restaurants">
     <b>Restaurants of&nbsp;</b>
     <select name="userId">
         <option value="100000">User</option>
@@ -18,5 +18,7 @@
     </select>
     <button type="submit">Select</button>
 </form>
+<li><a href="users">Users</a></li>
+
 </body>
 </html>

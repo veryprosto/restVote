@@ -13,7 +13,7 @@
     <hr/>
     <h2>Restaurants</h2>
     <hr/>
-    <form action="restaurants" method="get">
+    <form action="restaurants/create" method="get">
         <input type="submit" value="Add restaurant" />
     </form>
     <br><br>
@@ -37,7 +37,7 @@
                     </form>
                 </td>
                 <td>
-                    <form action="restaurants/${restaurant.id}" method="delete">
+                    <form action="restaurants/${restaurant.id}/delete" method="post">
                         <input type="submit"  value="Delete" />
                     </form>
                 </td>
