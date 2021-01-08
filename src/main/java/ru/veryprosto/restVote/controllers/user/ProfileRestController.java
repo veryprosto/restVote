@@ -10,7 +10,7 @@ import static ru.veryprosto.restVote.web.SecurityUtil.authUserId;
 @RestController
 @RequestMapping(ProfileRestController.REST_URL)
 public class ProfileRestController extends AbstractUserController {
-    static final String REST_URL = "users";
+    static final String REST_URL = "/users";
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public User get() {

@@ -26,7 +26,7 @@ public class Restaurant extends AbstractEntity {
     @NotNull
     private User user;
 
-    @OneToMany(fetch=FetchType.EAGER, mappedBy = "restaurant", cascade={CascadeType.PERSIST,  CascadeType.REMOVE})
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "restaurant", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Dish> menu = new ArrayList<>();
 
     public Restaurant() {

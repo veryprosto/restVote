@@ -8,9 +8,11 @@
     <title>Restaurants</title>
 </head>
 <body>
+<h2>${message}</h2>
+<form action="/logout" method="post">
+    <input value="Logout" type="submit">
+</form>
 <section>
-    <h3><a href="index.jsp">Home</a></h3>
-    <hr/>
     <h2>Restaurants</h2>
     <hr/>
     <form action="restaurants/create" method="get">
@@ -33,7 +35,7 @@
                 <td>${restaurant.name}</td>
                 <td>${restaurant.rating}</td>
                 <td>
-                    <form action="restaurants/${restaurant.id}" method="get">
+                    <form action="menu" method="get">
                         <input type="submit" value="Menu" />
                     </form>
                 </td>

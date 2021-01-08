@@ -48,6 +48,11 @@ public class UserService {
         return checkNotFound(repository.getByEmail(email), "email=" + email);
     }
 
+    public User getByName(String name) {
+        Assert.notNull(name, "name must not be null");
+        return checkNotFound(repository.getByName(name), "user name=" + name);
+    }
+
     public List<User> getAll() {
         return repository.getAll();
     }

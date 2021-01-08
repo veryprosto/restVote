@@ -38,9 +38,9 @@ CREATE UNIQUE INDEX restaurants_unique_user_name_idx ON restaurants (user_id, na
 CREATE TABLE dishes
 (
     id          INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
-    rest_id     INTEGER   NOT NULL,
+    restaurant_id     INTEGER   NOT NULL,
     name        TEXT      NOT NULL,
     price       INT       NOT NULL,
-    FOREIGN KEY (rest_id) REFERENCES restaurants (id) ON DELETE CASCADE
+    FOREIGN KEY (restaurant_id) REFERENCES restaurants (id) ON DELETE CASCADE
 );
-CREATE UNIQUE INDEX dish_unique_restaurant_name_dish_name_idx ON dishes (rest_id, name);
+CREATE UNIQUE INDEX dish_unique_restaurant_name_dish_name_idx ON dishes (restaurant_id, name);

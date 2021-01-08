@@ -7,10 +7,8 @@
 </head>
 <body>
 <section>
-    <h3><a href="index.jsp">Home</a></h3>
-    <hr/>
-    <jsp:useBean id="restaurant" type="ru.veryprosto.restVote.model.Restaurant"/>
-    <h2>Menu of ${restaurant.name}</h2>
+<%--    <jsp:useBean id="restaurant" type="ru.veryprosto.restVote.model.Restaurant"/>--%>
+<%--    <h2>Menu of ${restaurant.name}</h2>--%>
     <hr/>
     <a href="menu?action=create">Add new dish</a>
     <br><br>
@@ -23,7 +21,7 @@
             <th></th>
         </tr>
         </thead>
-        <c:forEach items="${menu}" var="dish">
+        <c:forEach items="${menuList}" var="dish">
             <jsp:useBean id="dish" type="ru.veryprosto.restVote.model.Dish"/>
             <tr>
                 <td>${dish.name}</td>

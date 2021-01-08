@@ -12,11 +12,11 @@
 <form action="registration" method="post">
     <fieldset>
         <h2>Введите данные авторизации</h2>
-       <%-- <div if="${param.error}">
-            <div class="alert alert-danger">
-                Вы ввели неправильные данные
-            </div>
-        </div>--%>
+        <%-- <div if="${param.error}">
+             <div class="alert alert-danger">
+                 Вы ввели неправильные данные
+             </div>
+         </div>--%>
         <select name="role">
             <option value="USER">User</option>
             <option value="OWNER">Owner</option>

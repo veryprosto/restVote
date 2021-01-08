@@ -31,12 +31,12 @@ public class RestaurantService {
     }
 
     public void update(Restaurant restaurant, int userId) {
-        Assert.notNull(restaurant, "meal must not be null");
+        Assert.notNull(restaurant, "restaurant must not be null");
         checkNotFoundWithId(repository.save(restaurant, userId), restaurant.id());
     }
 
     public Restaurant create(Restaurant restaurant, int userId) {
-        Assert.notNull(restaurant, "meal must not be null");
+        Assert.notNull(restaurant, "restaurant must not be null");
         return repository.save(restaurant, userId);
     }
 }

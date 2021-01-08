@@ -16,4 +16,8 @@ public class SecurityUtil {
     public static void setAuthUserId(int id) {
         SecurityUtil.id = id;
     }
+
+    public static int authRestaurantId() {
+        return 100005;
+    }
 }

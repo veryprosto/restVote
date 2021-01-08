@@ -48,7 +48,7 @@ public class RestaurantRestController {
         Restaurant restaurant = new Restaurant("", 0);
         model.addAttribute("restaurant", restaurant);
         model.addAttribute("action_create", true);
-        modelAndView.setViewName("restaurantForm");
+        modelAndView.setViewName("/restaurantForm");
         return modelAndView;
     }
 
@@ -63,17 +63,11 @@ public class RestaurantRestController {
     }
 
     @GetMapping
-    public ModelAndView getAll(@ModelAttribute("userId") int userId, Model model) {
+    public ModelAndView getAll(Model model) {
         ModelAndView modelAndView = new ModelAndView();
-        if (userId != 0) {
-            SecurityUtil.setAuthUserId(userId);
-        } else userId = SecurityUtil.authUserId();
+        int userId = SecurityUtil.authUserId();
         modelAndView.setViewName("restaurants");
         model.addAttribute("restaurantList", service.getAll(userId));
         return modelAndView;
-    }
-
-    private ModelAndView getAll(Model model) {
-        return getAll(0, model);
     }
 }

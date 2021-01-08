@@ -11,7 +11,7 @@
 </head>
 <body>
 <section>
-    <h3><a href="index.jsp">Home</a></h3>
+    <h3><a href="start.jsp">Home</a></h3>
     <hr/>
     <h2>Users</h2>
     <hr/>

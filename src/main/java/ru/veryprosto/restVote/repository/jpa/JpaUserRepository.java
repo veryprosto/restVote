@@ -50,6 +50,14 @@ public class JpaUserRepository implements UserRepository {
     }
 
     @Override
+    public User getByName(String name) {
+        List<User> users = em.createNamedQuery(User.BY_NAME, User.class)
+                .setParameter(1, name)
+                .getResultList();
+        return DataAccessUtils.singleResult(users);
+    }
+
+    @Override
     public List<User> getAll() {
         return em.createNamedQuery(User.ALL_SORTED, User.class).getResultList();
     }
