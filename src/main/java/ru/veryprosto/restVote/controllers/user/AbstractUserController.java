@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.veryprosto.restVote.model.User;
 import ru.veryprosto.restVote.service.UserService;
+import ru.veryprosto.restVote.service.SecurityManager;
 
 import java.util.List;
 
@@ -16,6 +17,9 @@ public abstract class AbstractUserController {
 
     @Autowired
     private UserService service;
+
+    @Autowired
+    public SecurityManager securityManager;
 
     public List<User> getAll() {
         log.info("getAll");

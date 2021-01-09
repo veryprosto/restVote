@@ -35,7 +35,7 @@
                 <td>${restaurant.name}</td>
                 <td>${restaurant.rating}</td>
                 <td>
-                    <form action="menu" method="get">
+                    <form action="restaurants/${restaurant.id}/menu" method="get">
                         <input type="submit" value="Menu" />
                     </form>
                 </td>

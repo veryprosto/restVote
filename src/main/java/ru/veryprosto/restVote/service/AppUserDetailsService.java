@@ -17,11 +17,18 @@ public class AppUserDetailsService implements UserDetailsService {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private SecurityManager securityManager;
+
     @Transactional(readOnly = true)
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         User user = userService.getByName(username);
+
+        //запоминаем юзера для текущей сессии
+        securityManager.setAuthUserId(user);
+
         UserBuilder builder = null;
         if (user != null) {
             builder = org.springframework.security.core.userdetails.User.withUsername(username);

@@ -8,7 +8,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 import ru.veryprosto.restVote.model.User;
 import ru.veryprosto.restVote.service.UserService;
-import ru.veryprosto.restVote.web.SecurityUtil;
+import ru.veryprosto.restVote.service.SecurityManager;
+
 
 import java.security.Principal;
 
@@ -17,9 +18,11 @@ import java.security.Principal;
 public class MainRestController {
 
     private UserService userService;
+    private SecurityManager securityManager;
 
-    public MainRestController(UserService userService) {
+    public MainRestController(UserService userService, SecurityManager securityManager) {
         this.userService = userService;
+        this.securityManager = securityManager;
     }
 
     @GetMapping
@@ -28,12 +31,15 @@ public class MainRestController {
         attributes.addAttribute("attribute", "/");
 
         if (principal != null) {
-            User user = userService.getByName(principal.getName());
+            User user = securityManager.currentUser();
             model.addAttribute("message", "You are logged in as " + user.getName() + " " + user.getRoles().stream().findFirst());
-            SecurityUtil.setAuthUserId(user.getId());
         }
 
         return new RedirectView("/restaurants");
     }
 
+    @GetMapping("closeSession")
+    public void  closeSession() {
+        securityManager.logout();
+    }
 }
