@@ -1,14 +1,18 @@
 package ru.veryprosto.restVote.model;
 
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.Immutable;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Date;
 
 @MappedSuperclass
 @Access(AccessType.FIELD)
+@EntityListeners(BaseEntityListener.class)
 public class AbstractEntity {
     public static final int START_SEQ = 100000;
 
@@ -21,6 +25,9 @@ public class AbstractEntity {
     @Size(min = 2, max = 100)
     @Column(name = "name", nullable = false)
     protected String name;
+
+    @Column(name = "modify", nullable = false)
+    private Date modify;
 
     protected AbstractEntity() {
     }
@@ -77,4 +84,13 @@ public class AbstractEntity {
     public int hashCode() {
         return id == null ? 0 : id;
     }
+
+    public Date getModify() {
+        return modify;
+    }
+
+    public void setModify(Date modify) {
+        this.modify = modify;
+    }
+
 }

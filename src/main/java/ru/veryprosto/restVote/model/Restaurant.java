@@ -4,17 +4,23 @@ import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @NamedQueries({
+        @NamedQuery(name = Restaurant.ALL, query = "SELECT r FROM Restaurant r ORDER BY r.rating DESC"),
         @NamedQuery(name = Restaurant.ALL_SORTED, query = "SELECT r FROM Restaurant r WHERE r.user.id=:userId ORDER BY r.rating DESC"),
         @NamedQuery(name = Restaurant.DELETE, query = "DELETE FROM Restaurant r WHERE r.id=:id AND r.user.id=:userId"),
 })
 @Entity
 @Table(name = "restaurants", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id"}, name = "restaurants_unique_user_idx")})
 public class Restaurant extends AbstractEntity {
-    public static final String ALL_SORTED = "Restaurant.getAll";
+    public static final String ALL = "Restaurant.getAll";
+    public static final String ALL_SORTED = "Restaurant.getAllByUserId";
     public static final String DELETE = "Restaurant.delete";
 
     @Column(name = "rating", nullable = false)
@@ -28,6 +34,31 @@ public class Restaurant extends AbstractEntity {
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "restaurant", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Dish> menu = new ArrayList<>();
+
+    public List<Dish> getMenu() {
+        return menu;
+    }
+
+    @Column
+    @Transient
+    private Boolean menuMustUpdate;
+
+
+    public Boolean getMenuMustUpdate() {
+        menuMustUpdate = isMenuMustUpdate();
+        return menuMustUpdate;
+    }
+
+    private Boolean isMenuMustUpdate() {
+        LocalDate currentLocalDate = LocalDate.now();
+        AtomicInteger countCurrent = new AtomicInteger();
+        menu.forEach(d->{
+            LocalDate dishLocalDate = (new Timestamp(d.getModify().getTime())).toLocalDateTime().toLocalDate();
+            if (dishLocalDate.compareTo(currentLocalDate) == 0)
+                countCurrent.getAndIncrement();
+        });
+        return countCurrent.get() == 0;
+    }
 
     public Restaurant() {
     }

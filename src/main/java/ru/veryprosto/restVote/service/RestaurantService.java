@@ -18,16 +18,24 @@ public class RestaurantService {
         this.repository = repository;
     }
 
-    public Restaurant get(int id, int userId) {
-        return checkNotFoundWithId(repository.get(id, userId), id);
+    public Restaurant getByUserId(int id, int userId) {
+        return checkNotFoundWithId(repository.getByUserId(id, userId), id);
+    }
+
+    public Restaurant get(int id) {
+        return checkNotFoundWithId(repository.get(id), id);
     }
 
     public void delete(int id, int userId) {
         checkNotFoundWithId(repository.delete(id, userId), id);
     }
 
-    public List<Restaurant> getAll(int userId) {
-        return repository.getAll(userId);
+    public List<Restaurant> getAllByUser(int userId) {
+        return repository.getAllByUserId(userId);
+    }
+
+    public List<Restaurant> getAll() {
+        return repository.getAll();
     }
 
     public void update(Restaurant restaurant, int userId) {

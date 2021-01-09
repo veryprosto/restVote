@@ -1,6 +1,7 @@
 package ru.veryprosto.restVote.service;
 
 import org.springframework.stereotype.Service;
+import ru.veryprosto.restVote.model.Role;
 import ru.veryprosto.restVote.model.User;
 
 @Service
@@ -22,5 +23,9 @@ public class SecurityManager {
 
     public void logout() {
         user = null;
+    }
+
+    public Role getCurrentUserRole() {
+        return currentUser().getRoles().stream().findFirst().get();
     }
 }

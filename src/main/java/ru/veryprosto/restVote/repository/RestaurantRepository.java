@@ -12,7 +12,11 @@ public interface RestaurantRepository {
     boolean delete(int id, int userId);
 
     // null if restaurant do not belong to userId
-    Restaurant get(int id, int userId);
+    Restaurant getByUserId(int id, int userId);
 
-    List<Restaurant> getAll(int userId);
+    Restaurant get(int id);
+
+    List<Restaurant> getAllByUserId(int userId);
+
+    List<Restaurant> getAll();
 }

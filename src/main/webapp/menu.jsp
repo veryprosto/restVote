@@ -11,23 +11,23 @@
 <body>
 <section>
     <jsp:useBean id="restaurant" type="ru.veryprosto.restVote.model.Restaurant" scope="request"/>
-
     <h2>Menu of ${restaurant.name}</h2>
-    <hr/>
-
-
-    <form action="restaurants/${restaurant.id}/menu/create" method="get">
-        <input type="submit" value="Add new dish"/>
-    </form>
-
+    <c:if test="${role == 'OWNER'}">
+        <hr/>
+        <form action="restaurants/${restaurant.id}/menu/create" method="get">
+            <input type="submit" value="Add new dish"/>
+        </form>
+    </c:if>
     <br><br>
     <table border="1" cellpadding="8" cellspacing="0">
         <thead>
         <tr>
             <th>Description</th>
             <th>Price</th>
-            <th></th>
-            <th></th>
+            <c:if test="${role == 'OWNER'}">
+                <th></th>
+                <th></th>
+            </c:if>
         </tr>
         </thead>
         <c:forEach items="${menuList}" var="dish">
@@ -35,36 +35,40 @@
             <tr>
                 <td>${dish.name}</td>
                 <td>${dish.price}</td>
-                <td>
-                    <form action="restaurants/${restaurant.id}/menu/${dish.id}" method="get">
-                        <input type="submit" value="Update"/>
-                    </form>
-                </td>
-                <td>
-                    <form action="restaurants/${restaurant.id}/menu/${dish.id}/delete" method="post">
-                        <input type="submit" value="Delete"/>
-                    </form>
-                </td>
+                <c:if test="${role == 'OWNER'}">
+                    <td>
+                        <form action="restaurants/${restaurant.id}/menu/${dish.id}" method="get">
+                            <input type="submit" value="Update"/>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="restaurants/${restaurant.id}/menu/${dish.id}/delete" method="post">
+                            <input type="submit" value="Delete"/>
+                        </form>
+                    </td>
+                </c:if>
             </tr>
         </c:forEach>
     </table>
     <br><br>
-    Вы бы пошли вечером в этот ресторан?
-    <table>
-        <tr>
-            <td>
-                <form action="restaurants/${restaurant.id}/like" method="post">
-                    <input type="submit" value="Да!"/>
-                </form>
-            </td>
-            <td>                                            </td>
-            <td>
-                <form action="restaurants/${restaurant.id}/unlike" method="post">
-                    <input type="submit" value="Нет!"/>
-                </form>
-            </td>
-        </tr>
-    </table>
+    <c:if test="${role == 'USER'}">
+        Вы бы пошли вечером в этот ресторан?
+        <table>
+            <tr>
+                <td>
+                    <form action="restaurants/${restaurant.id}/like" method="post">
+                        <input type="submit" value="Да!"/>
+                    </form>
+                </td>
+                <td>                                            </td>
+                <td>
+                    <form action="restaurants/${restaurant.id}/unlike" method="post">
+                        <input type="submit" value="Нет!"/>
+                    </form>
+                </td>
+            </tr>
+        </table>
+    </c:if>
 </section>
 </body>
 </html>

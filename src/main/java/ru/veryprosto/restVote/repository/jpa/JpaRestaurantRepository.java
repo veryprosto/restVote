@@ -24,7 +24,7 @@ public class JpaRestaurantRepository implements RestaurantRepository {
         if (restaurant.isNew()) {
             em.persist(restaurant);
             return restaurant;
-        } else if (get(restaurant.id(), userId) == null) {
+        } else if (getByUserId(restaurant.id(), userId) == null) {
             return null;
         }
         return em.merge(restaurant);
@@ -40,15 +40,26 @@ public class JpaRestaurantRepository implements RestaurantRepository {
     }
 
     @Override
-    public Restaurant get(int id, int userId) {
+    public Restaurant getByUserId(int id, int userId) {
         Restaurant restaurant = em.find(Restaurant.class, id);
         return restaurant != null && restaurant.getUser().getId() == userId ? restaurant : null;
     }
 
     @Override
-    public List<Restaurant> getAll(int userId) {
+    public Restaurant get(int id) {
+        return em.find(Restaurant.class, id);
+    }
+
+    @Override
+    public List<Restaurant> getAllByUserId(int userId) {
         return em.createNamedQuery(Restaurant.ALL_SORTED, Restaurant.class)
                 .setParameter("userId", userId)
+                .getResultList();
+    }
+
+    @Override
+    public List<Restaurant> getAll() {
+        return em.createNamedQuery(Restaurant.ALL, Restaurant.class)
                 .getResultList();
     }
 }

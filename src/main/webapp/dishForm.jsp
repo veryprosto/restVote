@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <html>
-<!-- определяем констекст для абсолютных ссылок -->
+<!-- определяем контекст для абсолютных ссылок -->
 <c:set var="baseURL" value="${pageContext.request.requestURL.substring(0, pageContext.request.requestURL.length() - pageContext.request.requestURI.length())}${pageContext.request.contextPath}/" />
 <head>
     <base href="${baseURL}" />
@@ -10,11 +10,10 @@
 </head>
 <body>
 <section>
-    <h3><a href="menu.jsp">Home</a></h3>
     <hr>
     <h2>${action_create == true ? 'Adding a new dish' : 'Editing a dish'}</h2>
     <jsp:useBean id="dish" type="ru.veryprosto.restVote.model.Dish" scope="request"/>
-    <form method="post" action="menu">
+    <form method="post" action="restaurants/${restaurantId}/menu">
         <input type="hidden" name="id" value="${dish.id}">
         <dl>
             <dt>Name:</dt>

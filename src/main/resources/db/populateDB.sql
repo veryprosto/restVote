@@ -26,18 +26,18 @@ VALUES ('астория', 1, 100001),
        ('дрезден', 5, 100002),
        ('ереван', 6, 100002);
 
-INSERT INTO dishes (name, price, restaurant_id)
-VALUES ('блюдо1 из астории', 1000, (SELECT id FROM restaurants WHERE name = 'астория' limit 1)),
-       ('блюдо2 из астории', 1200, (SELECT id FROM restaurants WHERE name = 'астория' limit 1)),
-       ('блюдо1 из баварии', 1000, (SELECT id FROM restaurants WHERE name = 'бавария' limit 1)),
-       ('блюдо2 из баварии', 1200, (SELECT id FROM restaurants WHERE name = 'бавария' limit 1)),
-       ('блюдо1 из венгрии', 1000, (SELECT id FROM restaurants WHERE name = 'венгрия' limit 1)),
-       ('блюдо2 из венгрии', 1200, (SELECT id FROM restaurants WHERE name = 'венгрия' limit 1)),
-       ('блюдо1 из голландии', 1000, (SELECT id FROM restaurants WHERE name = 'голландия' limit 1)),
-       ('блюдо2 из голландии', 1200, (SELECT id FROM restaurants WHERE name = 'голландия' limit 1)),
-       ('блюдо1 из дрездена', 1000, (SELECT id FROM restaurants WHERE name = 'дрезден' limit 1)),
-       ('блюдо2 из дрездена', 1200, (SELECT id FROM restaurants WHERE name = 'дрезден' limit 1)),
-       ('блюдо1 из еревана', 1000, (SELECT id FROM restaurants WHERE name = 'ереван' limit 1)),
-       ('блюдо2 из еревана', 1200, (SELECT id FROM restaurants WHERE name = 'ереван' limit 1));
+INSERT INTO dishes (name, price, restaurant_id, modify)
+VALUES ('блюдо1 из астории', 1000, (SELECT id FROM restaurants WHERE name = 'астория' limit 1), now()),
+       ('блюдо2 из астории', 1200, (SELECT id FROM restaurants WHERE name = 'астория' limit 1), now()),
+       ('блюдо1 из баварии', 1000, (SELECT id FROM restaurants WHERE name = 'бавария' limit 1), now()),
+       ('блюдо2 из баварии', 1200, (SELECT id FROM restaurants WHERE name = 'бавария' limit 1), now()),
+       ('блюдо1 из венгрии', 1000, (SELECT id FROM restaurants WHERE name = 'венгрия' limit 1), now()),
+       ('блюдо2 из венгрии', 1200, (SELECT id FROM restaurants WHERE name = 'венгрия' limit 1), now()),
+       ('блюдо1 из голландии', 1000, (SELECT id FROM restaurants WHERE name = 'голландия' limit 1), now()),
+       ('блюдо2 из голландии', 1200, (SELECT id FROM restaurants WHERE name = 'голландия' limit 1), now()),
+       ('блюдо1 из дрездена', 1000, (SELECT id FROM restaurants WHERE name = 'дрезден' limit 1), now() - interval '1 day'),
+       ('блюдо2 из дрездена', 1200, (SELECT id FROM restaurants WHERE name = 'дрезден' limit 1), now()),
+       ('блюдо1 из еревана', 1000, (SELECT id FROM restaurants WHERE name = 'ереван' limit 1), now() - interval '1 day'),
+       ('блюдо2 из еревана', 1200, (SELECT id FROM restaurants WHERE name = 'ереван' limit 1), now() - interval '1 day');
 
 

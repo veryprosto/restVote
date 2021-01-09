@@ -36,6 +36,7 @@ public class MenuRestController {
         log.info("get dish {} from restaurant {}", id, restaurantId);
         model.addAttribute("dish", service.get(id, restaurantId));
         model.addAttribute("action_create", false);
+        model.addAttribute("restaurantId", restaurantId);
         modelAndView.setViewName("dishForm");
         return modelAndView;
     }
@@ -43,6 +44,7 @@ public class MenuRestController {
     @PostMapping("/{id}/delete")
     public ModelAndView delete(@PathVariable("restaurantId") int restaurantId,
                                @PathVariable(value = "id") String id, Model model) {
+        //TODO: проверить роль!!!
         log.info("delete dish {} from restaurant {}", id, restaurantId);
         service.delete(Integer.parseInt(id), restaurantId);
         return getAll(restaurantId,model);
@@ -50,16 +52,19 @@ public class MenuRestController {
 
     @GetMapping("/create")
     public ModelAndView create(@PathVariable("restaurantId") int restaurantId, Model model) {
+        //TODO: проверить роль!!!
         ModelAndView modelAndView = new ModelAndView();
         Dish dish = new Dish("", 0);
         model.addAttribute("dish", dish);
         model.addAttribute("action_create", true);
-        modelAndView.setViewName("/dishForm");
+        model.addAttribute("restaurantId", restaurantId);
+        modelAndView.setViewName("dishForm");
         return modelAndView;
     }
 
     @PostMapping
     public ModelAndView update(@PathVariable("restaurantId") int restaurantId, Model model, Dish dish) {
+        //TODO: проверить роль!!!
         dish.setName(safetyConvertToUTF8(dish.getName()));
         log.info("update {} from restaurant {}", dish, restaurantId);
         service.update(dish, restaurantId);
@@ -72,7 +77,22 @@ public class MenuRestController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("menu");
         model.addAttribute("menuList", service.getAll(restaurantId));
-        model.addAttribute("restaurant", restaurantService.get(restaurantId, securityManager.authUserId()));
+        model.addAttribute("role", securityManager.getCurrentUserRole().name());
+        model.addAttribute("restaurant", getRestaurantByRole(restaurantId));
         return modelAndView;
+    }
+
+
+    private Restaurant getRestaurantByRole(int restaurantId) {
+        Restaurant restaurant = null;
+        switch (securityManager.getCurrentUserRole()) {
+            case OWNER:
+                restaurant = restaurantService.getByUserId(restaurantId, securityManager.authUserId());
+                break;
+            case USER:
+                restaurant = restaurantService.get(restaurantId);
+                break;
+        }
+        return  restaurant;
     }
 }
