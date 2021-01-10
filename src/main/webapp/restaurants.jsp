@@ -16,7 +16,7 @@
 <section>
     <h2>Restaurants</h2>
     <c:if test="${role == 'OWNER'}">
-    <hr/>
+        <hr/>
         <form action="restaurants/create" method="get">
             <input type="submit" value="Add restaurant"/>
         </form>
@@ -41,15 +41,18 @@
                 <td>${restaurant.rating}</td>
                 <td>
                     <form action="restaurants/${restaurant.id}/menu" method="get">
+                        <c:if test="${role == 'OWNER'}">
+                            <c:if test="${restaurant.menuMustUpdate == true}">
+                                требуется обновление!!!
+                            </c:if>
+                        </c:if>
                         <input type="submit" value="Menu"/>
                     </form>
                 </td>
 
                 <c:if test="${role == 'OWNER'}">
                     <td>
-                        <c:if test="${restaurant.menuMustUpdate == true}">
-                            !!!
-                        </c:if>
+
                         <form action="restaurants/${restaurant.id}" method="get">
                             <input type="submit" value="Update"/>
                         </form>

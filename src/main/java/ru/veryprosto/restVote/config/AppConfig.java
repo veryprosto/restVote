@@ -24,7 +24,7 @@ import java.util.Properties;
 import static org.hibernate.cfg.Environment.*;
 
 @Configuration
-@PropertySource("classpath:db/postgres.properties")
+@PropertySource("classpath:db/hsqldb.properties")
 @EnableTransactionManagement
 @ComponentScans(value = { @ComponentScan("ru.veryprosto.**") })
 public class AppConfig {
@@ -34,7 +34,8 @@ public class AppConfig {
     @Autowired
     private Environment env;
 
-    @Value("classpath:db/initDB.sql")
+    //@Value("classpath:db/initDB.sql")//база постгрес
+    @Value("classpath:db/initDB_hsql.sql")
     private Resource initScript;
 
     @Value("classpath:db/populateDB.sql")
@@ -42,7 +43,6 @@ public class AppConfig {
 
     @PostConstruct
     public void initDb() {
-        //  String encoded=new BCryptPasswordEncoder().encode("password");
         DataSource dataSource = getTransactionManager().getDataSource();
         String property = env.getProperty("database.init");
         if (dataSource != null && property != null && property.equalsIgnoreCase("true")) {
@@ -75,8 +75,8 @@ public class AppConfig {
         // Setting JDBC properties
         props.put(DRIVER, env.getProperty("database.driverClassName"));
         props.put(URL, env.getProperty("database.url"));
-        props.put(USER, env.getProperty("database.username"));
-        props.put(PASS, env.getProperty("database.password"));
+//        props.put(USER, env.getProperty("database.username"));
+//        props.put(PASS, env.getProperty("database.password"));
 
         // Setting Hibernate properties
         props.put(SHOW_SQL, env.getProperty("hibernate.show_sql"));

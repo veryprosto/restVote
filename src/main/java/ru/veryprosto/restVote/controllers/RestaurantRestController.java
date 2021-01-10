@@ -111,8 +111,6 @@ public class RestaurantRestController {
             int savedVote = currentUserVote != null ? currentUserVote.getVote() : 0;
             int correctChangeRating = savedVote*(-1) + value;
 
-            //TODO: изменить границы, чтобы можно было уходть в минус
-
             if (currentUserVote == null) {
                 UserVote vote = new UserVote(restaurant, user, value);
                 userVoteService.create(vote);

@@ -10,6 +10,7 @@
 </head>
 <body>
 <section>
+    <h3><a href="/restaurants">Return to restaurantList</a></h3>
     <jsp:useBean id="restaurant" type="ru.veryprosto.restVote.model.Restaurant" scope="request"/>
     <h2>Menu of ${restaurant.name}</h2>
     <c:if test="${role == 'OWNER'}">
