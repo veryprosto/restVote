@@ -6,9 +6,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import ru.veryprosto.restVote.model.Restaurant;
+import ru.veryprosto.restVote.model.User;
+import ru.veryprosto.restVote.model.UserVote;
 import ru.veryprosto.restVote.service.RestaurantService;
 import ru.veryprosto.restVote.service.SecurityManager;
+import ru.veryprosto.restVote.service.UserVoteService;
 
+import java.time.LocalTime;
 import java.util.List;
 
 import static ru.veryprosto.restVote.util.Util.safetyConvertToUTF8;
@@ -21,10 +25,12 @@ public class RestaurantRestController {
     private static final Logger log = LoggerFactory.getLogger(RestaurantRestController.class);
     private final RestaurantService service;
     private final SecurityManager securityManager;
+    private final UserVoteService userVoteService;
 
-    public RestaurantRestController(RestaurantService service, SecurityManager securityManager) {
+    public RestaurantRestController(RestaurantService service, SecurityManager securityManager, UserVoteService userVoteService) {
         this.service = service;
         this.securityManager = securityManager;
+        this.userVoteService = userVoteService;
     }
 
     @GetMapping("/{id}")
@@ -92,18 +98,39 @@ public class RestaurantRestController {
     }
 
     private ModelAndView vote(Model model, int id, int value) {
+
+        Restaurant restaurant = service.get(id);
+        User user = securityManager.currentUser();
+        UserVote currentUserVote = userVoteService.getByUserWithRestaurantId(user.getId(),restaurant.id());
+        LocalTime lc = LocalTime.now();
+
+        if (currentUserVote == null || lc.isBefore(LocalTime.of(11,0))) {
+
+            //вытаскиваем все голоса по текущему ресторану
+            int newRating = userVoteService.collectVotes(restaurant.id());
+            int savedVote = currentUserVote != null ? currentUserVote.getVote() : 0;
+            int correctChangeRating = savedVote*(-1) + value;
+
+            //TODO: изменить границы, чтобы можно было уходть в минус
+
+            if (currentUserVote == null) {
+                UserVote vote = new UserVote(restaurant, user, value);
+                userVoteService.create(vote);
+            } else {
+                currentUserVote.setVote(value);
+                userVoteService.update(currentUserVote);
+            }
+
+            int rating = restaurant.getRating() + correctChangeRating;
+            restaurant.setRating(rating);
+
+            //обновляем ресторан с указанием владельца
+            service.update(restaurant, restaurant.getUser().getId());
+        }
+
         ModelAndView modelAndView = new ModelAndView();
-        int userId = securityManager.authUserId();
-
-        Restaurant restaurant = service.getByUserId(id, userId);
-
-        int rating = restaurant.getRating() + value;
-        restaurant.setRating(rating);
-
-        service.update(restaurant, userId);
-
         modelAndView.setViewName("restaurants");
-        model.addAttribute("restaurantList", service.getAllByUser(userId));
+        model.addAttribute("restaurantList", service.getAll());
         return modelAndView;
     }
 

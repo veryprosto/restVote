@@ -7,9 +7,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 import ru.veryprosto.restVote.model.User;
-import ru.veryprosto.restVote.service.UserService;
 import ru.veryprosto.restVote.service.SecurityManager;
-
+import ru.veryprosto.restVote.service.UserService;
 
 import java.security.Principal;
 
@@ -27,19 +26,17 @@ public class MainRestController {
 
     @GetMapping
     public RedirectView  index(Model model, Principal principal, RedirectAttributes attributes) {
-        attributes.addFlashAttribute("flashAttribute", "redirectWithRedirectView");
-        attributes.addAttribute("attribute", "/");
 
         if (principal != null) {
             User user = securityManager.currentUser();
             model.addAttribute("message", "You are logged in as " + user.getName() + " " + user.getRoles().stream().findFirst());
         }
-
         return new RedirectView("/restaurants");
     }
 
     @GetMapping("closeSession")
-    public void  closeSession() {
+    public RedirectView  closeSession() {
         securityManager.logout();
+        return new RedirectView("/restaurants");
     }
 }

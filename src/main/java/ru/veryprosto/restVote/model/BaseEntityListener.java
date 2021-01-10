@@ -5,6 +5,7 @@ import javax.persistence.PreUpdate;
 import java.util.Date;
 
 public class BaseEntityListener {
+
     @PrePersist
     public void preCreate(AbstractEntity entity) {
         Date date = new Date();

@@ -1,5 +1,7 @@
 package ru.veryprosto.restVote.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.MethodInvokingBean;
@@ -12,10 +14,7 @@ import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import ru.veryprosto.restVote.model.Dish;
-import ru.veryprosto.restVote.model.Restaurant;
-import ru.veryprosto.restVote.model.User;
-import ru.veryprosto.restVote.model.UserRoles;
+import ru.veryprosto.restVote.model.*;
 
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
@@ -29,6 +28,8 @@ import static org.hibernate.cfg.Environment.*;
 @EnableTransactionManagement
 @ComponentScans(value = { @ComponentScan("ru.veryprosto.**") })
 public class AppConfig {
+
+    private static final Logger log = LoggerFactory.getLogger(AppConfig.class);
 
     @Autowired
     private Environment env;
@@ -85,7 +86,6 @@ public class AppConfig {
         props.put("hibernate.connection.CharSet", "utf-8");
         props.put("hibernate.connection.useUnicode", true);
         props.put("hibernate.connection.characterEncoding", "utf-8");
-        //   props.put(HBM2DDL_AUTO, env.getProperty("hibernate.hbm2ddl.auto"));
 
         // Setting C3P0 properties
         props.put(C3P0_MIN_SIZE, env.getProperty("hibernate.c3p0.min_size"));
@@ -95,7 +95,12 @@ public class AppConfig {
         props.put(C3P0_MAX_STATEMENTS, env.getProperty("hibernate.c3p0.max_statements"));
 
         factoryBean.setHibernateProperties(props);
-        factoryBean.setAnnotatedClasses(User.class, UserRoles.class, Restaurant.class, Dish.class);
+        factoryBean.setAnnotatedClasses(
+                User.class,
+                UserRoles.class,
+                Restaurant.class,
+                Dish.class,
+                UserVote.class);
 
         return factoryBean;
     }

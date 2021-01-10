@@ -9,21 +9,13 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import ru.veryprosto.restVote.model.Role;
 
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    private final String USER = Role.USER.name();
-    private final String OWNER = Role.OWNER.name();
-    private final String ADMIN = Role.ADMIN.name();
-
     @Override
     protected void configure(HttpSecurity config) throws Exception {
         config.httpBasic()
-//                .and().authorizeRequests()
-//                .antMatchers("/restaurants")
-//                .hasAnyRole(USER, OWNER, ADMIN)
                 .and().formLogin()
                 .loginPage("/login")
                 .usernameParameter("username")
@@ -39,7 +31,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .anyRequest()
                 .authenticated()
                 .and().csrf().disable();
-//        config.headers().frameOptions().sameOrigin();
     }
 
     @Autowired
@@ -49,8 +40,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-    ;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {

@@ -7,7 +7,6 @@ import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -24,7 +23,7 @@ public class Restaurant extends AbstractEntity {
     public static final String DELETE = "Restaurant.delete";
 
     @Column(name = "rating", nullable = false)
-    @Range(min = 0, max = 5000)
+    @Range(min = -1000000, max = 1000000)
     private int rating;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -43,6 +42,17 @@ public class Restaurant extends AbstractEntity {
     @Transient
     private Boolean menuMustUpdate;
 
+    public Restaurant() {
+    }
+
+    public Restaurant(String name, int rating) {
+        this(null, name, rating);
+    }
+
+    public Restaurant(Integer id, String name, int rating) {
+        super(id, name);
+        this.rating = rating;
+    }
 
     public Boolean getMenuMustUpdate() {
         menuMustUpdate = isMenuMustUpdate();
@@ -58,18 +68,6 @@ public class Restaurant extends AbstractEntity {
                 countCurrent.getAndIncrement();
         });
         return countCurrent.get() == 0;
-    }
-
-    public Restaurant() {
-    }
-
-    public Restaurant(String name, int rating) {
-        this(null, name, rating);
-    }
-
-    public Restaurant(Integer id, String name, int rating) {
-        super(id, name);
-        this.rating = rating;
     }
 
     public User getUser() {
