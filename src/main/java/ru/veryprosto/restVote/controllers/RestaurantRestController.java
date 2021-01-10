@@ -6,11 +6,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import ru.veryprosto.restVote.model.Restaurant;
+import ru.veryprosto.restVote.model.Role;
 import ru.veryprosto.restVote.model.User;
 import ru.veryprosto.restVote.model.UserVote;
 import ru.veryprosto.restVote.service.RestaurantService;
 import ru.veryprosto.restVote.service.SecurityManager;
 import ru.veryprosto.restVote.service.UserVoteService;
+import ru.veryprosto.restVote.util.exception.NotFoundException;
 
 import java.time.LocalTime;
 import java.util.List;
@@ -35,7 +37,6 @@ public class RestaurantRestController {
 
     @GetMapping("/{id}")
     public ModelAndView get(@PathVariable(value = "id") int id, Model model) {
-        //TODO: проверить роль!!!
         ModelAndView modelAndView = new ModelAndView();
         int userId = securityManager.authUserId();
         log.info("get restaurant {} for user {}", id, userId);
@@ -47,7 +48,9 @@ public class RestaurantRestController {
 
     @PostMapping("/{id}/delete")
     public ModelAndView delete(@PathVariable(value = "id") String id, Model model) {
-        //TODO: проверить роль!!!
+        if (securityManager.getCurrentUserRole() != Role.OWNER) {
+            throw new NotFoundException("роль не та!");
+        }
         int userId = securityManager.authUserId();
         log.info("delete restaurant {} for user {}", id, userId);
         service.delete(Integer.parseInt(id), userId);
@@ -56,7 +59,9 @@ public class RestaurantRestController {
 
     @GetMapping("/create")
     public ModelAndView create(Model model) {
-        //TODO: проверить роль!!!
+        if (securityManager.getCurrentUserRole() != Role.OWNER) {
+            throw new NotFoundException("роль не та!");
+        }
         ModelAndView modelAndView = new ModelAndView();
         Restaurant restaurant = new Restaurant("", 0);
         model.addAttribute("restaurant", restaurant);
@@ -67,7 +72,9 @@ public class RestaurantRestController {
 
     @PostMapping
     public ModelAndView update(Model model, Restaurant restaurant) {
-        //TODO: проверить роль!!!
+        if (securityManager.getCurrentUserRole() != Role.OWNER){
+            throw new NotFoundException("роль не та!");
+        }
         restaurant.setName(safetyConvertToUTF8(restaurant.getName()));
         int userId = securityManager.authUserId();
         log.info("update {} for user {}", restaurant, userId);
@@ -87,13 +94,17 @@ public class RestaurantRestController {
 
     @PostMapping("/{id}/like")
     public ModelAndView like(Model model, @PathVariable(value = "id") int id) {
-        //TODO: проверить роль!!!
+        if (securityManager.getCurrentUserRole() != Role.USER){
+            throw new NotFoundException("роль не та!");
+        }
         return vote(model, id, 1);
     }
 
     @PostMapping("/{id}/unlike")
     public ModelAndView unlike(Model model, @PathVariable(value = "id") int id) {
-        //TODO: проверить роль!!!
+        if (securityManager.getCurrentUserRole() != Role.USER){
+            throw new NotFoundException("роль не та!");
+        }
         return vote(model, id, -1);
     }
 
@@ -101,15 +112,15 @@ public class RestaurantRestController {
 
         Restaurant restaurant = service.get(id);
         User user = securityManager.currentUser();
-        UserVote currentUserVote = userVoteService.getByUserWithRestaurantId(user.getId(),restaurant.id());
+        UserVote currentUserVote = userVoteService.getByUserWithRestaurantId(user.getId(), restaurant.id());
         LocalTime lc = LocalTime.now();
 
-        if (currentUserVote == null || lc.isBefore(LocalTime.of(11,0))) {
+        if (currentUserVote == null || lc.isBefore(LocalTime.of(11, 0))) {
 
             //вытаскиваем все голоса по текущему ресторану
             int newRating = userVoteService.collectVotes(restaurant.id());
             int savedVote = currentUserVote != null ? currentUserVote.getVote() : 0;
-            int correctChangeRating = savedVote*(-1) + value;
+            int correctChangeRating = savedVote * (-1) + value;
 
             if (currentUserVote == null) {
                 UserVote vote = new UserVote(restaurant, user, value);
@@ -142,6 +153,6 @@ public class RestaurantRestController {
                 restaurantList = service.getAll();
                 break;
         }
-        return  restaurantList;
+        return restaurantList;
     }
 }

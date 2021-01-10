@@ -7,9 +7,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import ru.veryprosto.restVote.model.Dish;
 import ru.veryprosto.restVote.model.Restaurant;
+import ru.veryprosto.restVote.model.Role;
 import ru.veryprosto.restVote.service.DishService;
 import ru.veryprosto.restVote.service.RestaurantService;
 import ru.veryprosto.restVote.service.SecurityManager;
+import ru.veryprosto.restVote.util.exception.NotFoundException;
 
 import static ru.veryprosto.restVote.util.Util.safetyConvertToUTF8;
 
@@ -44,15 +46,19 @@ public class MenuRestController {
     @PostMapping("/{id}/delete")
     public ModelAndView delete(@PathVariable("restaurantId") int restaurantId,
                                @PathVariable(value = "id") String id, Model model) {
-        //TODO: проверить роль!!!
+        if (securityManager.getCurrentUserRole() != Role.OWNER) {
+            throw new NotFoundException("роль не та!");
+        }
         log.info("delete dish {} from restaurant {}", id, restaurantId);
         service.delete(Integer.parseInt(id), restaurantId);
-        return getAll(restaurantId,model);
+        return getAll(restaurantId, model);
     }
 
     @GetMapping("/create")
     public ModelAndView create(@PathVariable("restaurantId") int restaurantId, Model model) {
-        //TODO: проверить роль!!!
+        if (securityManager.getCurrentUserRole() != Role.OWNER) {
+            throw new NotFoundException("роль не та!");
+        }
         ModelAndView modelAndView = new ModelAndView();
         Dish dish = new Dish("", 0);
         model.addAttribute("dish", dish);
@@ -64,7 +70,9 @@ public class MenuRestController {
 
     @PostMapping
     public ModelAndView update(@PathVariable("restaurantId") int restaurantId, Model model, Dish dish) {
-        //TODO: проверить роль!!!
+        if (securityManager.getCurrentUserRole() != Role.OWNER) {
+            throw new NotFoundException("роль не та!");
+        }
         dish.setName(safetyConvertToUTF8(dish.getName()));
         log.info("update {} from restaurant {}", dish, restaurantId);
         service.update(dish, restaurantId);
@@ -93,6 +101,6 @@ public class MenuRestController {
                 restaurant = restaurantService.get(restaurantId);
                 break;
         }
-        return  restaurant;
+        return restaurant;
     }
 }
