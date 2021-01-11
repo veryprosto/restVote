@@ -75,8 +75,6 @@ public class AppConfig {
         // Setting JDBC properties
         props.put(DRIVER, env.getProperty("database.driverClassName"));
         props.put(URL, env.getProperty("database.url"));
-//        props.put(USER, env.getProperty("database.username"));
-//        props.put(PASS, env.getProperty("database.password"));
 
         // Setting Hibernate properties
         props.put(SHOW_SQL, env.getProperty("hibernate.show_sql"));
