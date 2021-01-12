@@ -30,7 +30,6 @@ public class RestaurantServiceTest {
     @Autowired
     private RestaurantService restaurantService;
 
-
     @Test
     public void delete() {
         restaurantService.delete(RESTAURANT_BY_OWNER1, OWNER1);
@@ -66,20 +65,36 @@ public class RestaurantServiceTest {
     @Test
     public void getAll() {
         List<Restaurant> all = restaurantService.getAll();
-        assertEquals(all.size(), 6);
+        assertNotNull(all);
+        assertEquals(6, all.size());
     }
 
     @Test
     public void getAllByUser() {
         List<Restaurant> allByUser = restaurantService.getAllByUser(OWNER2);
-        assertEquals(allByUser.size(), 3);
+        assertNotNull(allByUser);
+        assertEquals(3, allByUser.size());
     }
 
     @Test
     public void update() {
+        Restaurant restaurant = restaurantService.get(RESTAURANT_BY_OWNER1);
+        String restName = "New Restaurant";
+        assertNotNull(restaurant);
+        restaurant.setName(restName);
+        assertThrows(NotFoundException.class, () -> restaurantService.update(restaurant, OWNER2));
+        restaurantService.update(restaurant, OWNER1);
+        Restaurant newRestaurant = restaurantService.get(RESTAURANT_BY_OWNER1);
+        assertEquals(restName, newRestaurant.getName());
     }
 
     @Test
     public void create() {
+        Restaurant restaurant = new Restaurant("New Restaurant", 0);
+        Restaurant newRestaurant = restaurantService.create(restaurant, OWNER2);
+        assertNotNull(newRestaurant);
+        Restaurant savedRestaurant = restaurantService.get(newRestaurant.getId());
+        assertNotNull(savedRestaurant);
+        assertEquals(restaurant.getName(), savedRestaurant.getName());
     }
 }
